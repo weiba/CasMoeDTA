@@ -44,10 +44,11 @@ CasMoeDTA is composed of feature extraction modules and model training modules.
 
 ### Feature extraction module
 
-- `Mol2Vec/` is used to generate drug molecular representations from SMILES sequences.
-  - `Mol2Vec.py` extracts Mol2Vec-based global drug features and atom/substructure-level drug features.
-  - `model_300dim.pkl` is the pretrained Mol2Vec model.
-  - `chembl_candidate_features/` stores related Mol2Vec feature resources.
+- `Mol2Vec/` is used for Mol2Vec-based drug feature extraction.
+  - `mol2vec/` contains the Mol2Vec source package used for molecular representation extraction. In particular, `features.py` and `helpers.py` provide the core functions for converting SMILES/molecules into Mol2Vec molecular sentences and atom/substructure-level representations. This folder is the local Mol2Vec code dependency used during feature generation.
+  - `model_300dim.pkl` is the pretrained Mol2Vec model used to map molecular substructures to 300-dimensional vectors.
+  - `Mol2Vec.py` is an additional script for interpretability analysis. It reads ChEMBL candidate drug SMILES and generates two candidate-drug feature files: `compound_Mol2Vec300.pkl` for global Mol2Vec drug descriptors and `compound_Atom2Vec300.pkl` for atom/substructure-level drug matrices.
+  - `chembl_candidate_features/` stores the generated ChEMBL candidate drug feature files used for interpretability analysis, including `compound_Mol2Vec300.pkl`, the split archive of `compound_Atom2Vec300.pkl`, and the record files `failed_drugs.csv`, `too_small_drugs.csv`, and `no_valid_words_drugs.csv`.
 
 - `ProtTransBertBFD_seq_matrix.py` is used to generate protein representations from protein sequences.
   - It extracts protein-level global vectors and residue-level sequence matrices using ProtTransBertBFD.
@@ -82,6 +83,10 @@ CasMoeDTA/
 ├── code/
 │   ├── Function/
 │   ├── Mol2Vec/
+│   │   ├── mol2vec/
+│   │   ├── Mol2Vec.py
+│   │   ├── model_300dim.pkl
+│   │   └── chembl_candidate_features/
 │   ├── LLMDTA4_moetransformer_GRU.py
 │   ├── ProtTransBertBFD_seq_matrix.py
 │   ├── training_moetransformer_noval.py
@@ -101,6 +106,37 @@ dta/davis/data_folds.zip          # together with data_folds.z01, .z02, ... if a
 ```
 
 Before running the model, unzip these split archives. Please keep all parts of the same archive in the same directory and extract from the final `.zip` file, not from `.z01`.
+
+
+In addition, the candidate drug feature file `compound_Atom2Vec300.pkl` in `code/Mol2Vec/chembl_candidate_features/` is stored as a split ZIP archive because of the file-size limit. Before using the interpretability-related candidate drug features, keep all split parts in the same directory and extract from the final `.zip` file:
+
+```text
+code/Mol2Vec/chembl_candidate_features/
+├── compound_Atom2Vec300.z01
+├── compound_Atom2Vec300.z02
+├── compound_Atom2Vec300.z03
+└── compound_Atom2Vec300.zip
+```
+
+On Linux, run:
+
+```bash
+cd code/Mol2Vec/chembl_candidate_features
+unzip compound_Atom2Vec300.zip
+```
+
+On Windows, use 7-Zip or WinRAR to extract `compound_Atom2Vec300.zip` directly. Do not extract from `.z01`, `.z02`, or `.z03` separately. After extraction, the directory should contain the following interpretability feature files:
+
+```text
+code/Mol2Vec/chembl_candidate_features/
+├── compound_Mol2Vec300.pkl
+├── compound_Atom2Vec300.pkl
+├── failed_drugs.csv
+├── no_valid_words_drugs.csv
+└── too_small_drugs.csv
+```
+
+Here, `compound_Mol2Vec300.pkl` stores global Mol2Vec vectors of candidate drugs, while `compound_Atom2Vec300.pkl` stores atom/substructure-level Mol2Vec matrices of candidate drugs.
 
 After extraction, the expected data structure is:
 
