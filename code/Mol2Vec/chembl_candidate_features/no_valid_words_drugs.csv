@@ -1,0 +1,10 @@
+drug_id,smiles,reason
+CHEMBL1200496,[Ca],"No valid Mol2Vec words, use mean Atom2Vec matrix"
+CHEMBL1200673,[127Xe],"No valid Mol2Vec words, use mean Atom2Vec matrix"
+CHEMBL1200685,[133Xe],"No valid Mol2Vec words, use mean Atom2Vec matrix"
+CHEMBL1201096,[81Kr],"No valid Mol2Vec words, use mean Atom2Vec matrix"
+CHEMBL1201189,[13NH3],"No valid Mol2Vec words, use mean Atom2Vec matrix"
+CHEMBL1233877,[Kr],"No valid Mol2Vec words, use mean Atom2Vec matrix"
+CHEMBL1236802,[Xe],"No valid Mol2Vec words, use mean Atom2Vec matrix"
+CHEMBL1796997,[He],"No valid Mol2Vec words, use mean Atom2Vec matrix"
+CHEMBL4594411,[129Xe],"No valid Mol2Vec words, use mean Atom2Vec matrix"
